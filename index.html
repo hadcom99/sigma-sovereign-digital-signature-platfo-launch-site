@@ -1,22 +1,1013 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" style="scroll-behavior:smooth">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SigMa: Sovereign Digital Signature Platform</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SigMa — Algeria's Only AECE-Accredited e-Signature</title>
 <style>
-  body { font-family: system-ui, sans-serif; margin: 0; background: #f9fafb; color: #111827; }
-  .hero { background: linear-gradient(135deg, #4F46E5, #7C3AED); color: #fff; text-align: center; padding: 120px 24px; }
-  h1 { font-size: 3rem; margin: 0 0 1rem; }
-  p { font-size: 1.25rem; opacity: 0.9; max-width: 600px; margin: 0 auto 2rem; }
-  .cta { background: #fff; color: #4F46E5; padding: 16px 40px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 1.1rem; }
+:root {
+  --color-primary:      #0A0F1E;
+  --color-secondary:    #1B2A4A;
+  --color-accent:       #00E5FF;
+  --color-bg:           #060B18;
+  --color-surface:      color-mix(in srgb, #060B18 88%, #E8EDF5 12%);
+  --color-surface-2:    color-mix(in srgb, #060B18 78%, #E8EDF5 22%);
+  --color-text:         #E8EDF5;
+  --color-muted:        color-mix(in srgb, #E8EDF5 62%, transparent);
+  --color-border:       color-mix(in srgb, #E8EDF5 14%, transparent);
+  --color-primary-tint: color-mix(in srgb, #0A0F1E 16%, #060B18);
+  --color-primary-ink:  color-mix(in srgb, #0A0F1E 78%, #ffffff 22%);
+  --color-accent-glow:  color-mix(in srgb, #00E5FF 22%, transparent);
+  --font-headline:      'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-body:          'Inter', system-ui, -apple-system, sans-serif;
+  --radius:             0.625rem;
+  --radius-lg:          1rem;
+  --shadow-sm:          0 1px 2px rgba(0,0,0,0.45);
+  --shadow-md:          0 6px 20px rgba(0,0,0,0.5);
+  --shadow-lg:          0 18px 50px rgba(0,0,0,0.6);
+  --transition:         250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 1; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+html { font-size:16px; }
+
+body {
+  background:var(--color-bg);
+  color:var(--color-text);
+  font-family:var(--font-body);
+  font-size:1.0625rem;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+
+a { color:var(--color-accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:focus-visible { outline:2px solid var(--color-accent); outline-offset:2px; }
+button:focus-visible { outline:2px solid var(--color-accent); outline-offset:2px; }
+
+.container { max-width:1140px; margin-inline:auto; padding-inline:clamp(1.25rem,5vw,2rem); }
+
+.eyebrow {
+  display:inline-block;
+  font-family:var(--font-headline);
+  font-size:0.75rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--color-accent);
+  margin-bottom:0.75rem;
+}
+
+.section-title {
+  font-family:var(--font-headline);
+  font-size:clamp(1.75rem,3vw,2.5rem);
+  font-weight:700;
+  color:var(--color-text);
+  line-height:1.2;
+  letter-spacing:-0.015em;
+}
+
+section { padding-block:clamp(4.5rem,9vw,8rem); }
+
+/* ── BUTTONS ── */
+.btn {
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  font-family:var(--font-headline);
+  font-weight:600;
+  font-size:0.9375rem;
+  border-radius:var(--radius);
+  padding:0.75rem 1.5rem;
+  cursor:pointer;
+  border:none;
+  transition:var(--transition);
+  text-decoration:none;
+}
+.btn-primary {
+  background:var(--color-accent);
+  color:#060B18;
+  box-shadow:var(--shadow-sm);
+}
+.btn-primary:hover { background:#00bcd4; text-decoration:none; color:#060B18; }
+.btn-secondary {
+  background:var(--color-surface);
+  color:var(--color-text);
+  border:1px solid var(--color-border);
+}
+.btn-secondary:hover { background:var(--color-surface-2); text-decoration:none; }
+
+/* ── HEADER ── */
+header {
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:color-mix(in srgb, var(--color-bg) 80%, transparent);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--color-border);
+  transition:box-shadow var(--transition), border-color var(--transition);
+}
+header.scrolled { box-shadow:var(--shadow-md); border-bottom-color:var(--color-accent-glow); }
+
+.header-inner {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1.5rem;
+  height:64px;
+}
+
+.logo-wrap { display:flex; align-items:center; flex-shrink:0; }
+.logo-wrap svg { height:32px; width:auto; }
+
+/* Fix logo SVG colors for dark bg — override fill on text & rects */
+.logo-wrap svg rect,
+.logo-wrap svg path:not([stroke="url(#accentGrad)"]) {
+  fill:var(--color-accent) !important;
+}
+.logo-wrap svg text { fill:var(--color-text) !important; }
+
+nav.desktop-nav { display:none; }
+@media(min-width:768px){
+  nav.desktop-nav {
+    display:flex;
+    align-items:center;
+    gap:2rem;
+    list-style:none;
+  }
+  nav.desktop-nav a {
+    font-size:0.9375rem;
+    font-family:var(--font-headline);
+    font-weight:500;
+    color:var(--color-muted);
+    transition:color var(--transition);
+    text-decoration:none;
+  }
+  nav.desktop-nav a:hover { color:var(--color-text); }
+}
+
+.header-cta { display:none; }
+@media(min-width:768px){ .header-cta { display:inline-flex; } }
+
+.hamburger {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:5px;
+  width:40px;
+  height:40px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:8px;
+  border-radius:var(--radius);
+}
+.hamburger span { display:block; width:100%; height:2px; background:var(--color-text); border-radius:2px; transition:var(--transition); }
+@media(min-width:768px){ .hamburger { display:none; } }
+
+/* Mobile drawer */
+.mobile-drawer {
+  display:none;
+  position:fixed;
+  inset:64px 0 0 0;
+  z-index:99;
+  background:var(--color-bg);
+  border-top:1px solid var(--color-border);
+  padding:2rem clamp(1.25rem,5vw,2rem);
+  flex-direction:column;
+  gap:1.5rem;
+}
+body.nav-open .mobile-drawer { display:flex; }
+.mobile-drawer a {
+  font-family:var(--font-headline);
+  font-size:1.125rem;
+  font-weight:600;
+  color:var(--color-muted);
+  transition:color var(--transition);
+}
+.mobile-drawer a:hover { color:var(--color-text); text-decoration:none; }
+.mobile-drawer .btn { align-self:flex-start; margin-top:0.5rem; }
+
+/* ── HERO ── */
+.hero {
+  padding-block:clamp(5rem,10vw,8rem);
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+}
+.hero::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, var(--color-accent-glow), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 50%, color-mix(in srgb,#1B2A4A 30%,transparent), transparent 70%);
+  pointer-events:none;
+  z-index:0;
+}
+.hero > .container { position:relative; z-index:1; }
+.hero-inner { max-width:820px; margin-inline:auto; }
+
+.hero h1 {
+  font-family:var(--font-headline);
+  font-size:clamp(2.5rem,5.5vw,3.75rem);
+  font-weight:800;
+  letter-spacing:-0.02em;
+  color:var(--color-text);
+  line-height:1.1;
+  margin-bottom:1.25rem;
+}
+.hero h1 span { color:var(--color-accent); }
+.hero-sub {
+  font-size:1.125rem;
+  color:var(--color-muted);
+  max-width:620px;
+  margin-inline:auto;
+  margin-bottom:2rem;
+}
+.hero-ctas { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-bottom:1.25rem; }
+.trust-line { font-size:0.8125rem; color:var(--color-muted); letter-spacing:0.03em; margin-bottom:3rem; }
+
+.hero-mock {
+  max-width:680px;
+  margin-inline:auto;
+  background:var(--color-surface);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+}
+.mock-bar {
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  padding:0.75rem 1rem;
+  background:var(--color-surface-2);
+  border-bottom:1px solid var(--color-border);
+}
+.mock-dot { width:10px; height:10px; border-radius:50%; }
+.mock-dot:nth-child(1){ background:#ff5f57; }
+.mock-dot:nth-child(2){ background:#febc2e; }
+.mock-dot:nth-child(3){ background:#28c840; }
+.mock-url {
+  flex:1;
+  height:22px;
+  background:var(--color-bg);
+  border-radius:4px;
+  margin-left:0.5rem;
+  display:flex;
+  align-items:center;
+  padding:0 0.625rem;
+  font-size:0.75rem;
+  color:var(--color-muted);
+  font-family:var(--font-body);
+}
+.mock-body { padding:1.5rem; display:flex; flex-direction:column; gap:0.75rem; }
+.mock-row { display:flex; gap:0.75rem; align-items:center; }
+.mock-avatar { width:36px; height:36px; border-radius:50%; background:var(--color-accent-glow); border:1px solid var(--color-accent); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:0.6875rem; font-weight:700; color:var(--color-accent); }
+.mock-lines { flex:1; display:flex; flex-direction:column; gap:6px; }
+.mock-line { height:8px; border-radius:4px; background:var(--color-surface-2); }
+.mock-line.w80 { width:80%; }
+.mock-line.w60 { width:60%; }
+.mock-line.w40 { width:40%; }
+.mock-line.accent { background:color-mix(in srgb,var(--color-accent) 30%,var(--color-surface-2)); }
+.mock-status-row { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.mock-badge {
+  padding:0.25rem 0.75rem;
+  border-radius:4px;
+  font-size:0.6875rem;
+  font-weight:600;
+  font-family:var(--font-headline);
+}
+.mock-badge.green { background:color-mix(in srgb,#28c840 18%,transparent); color:#28c840; border:1px solid color-mix(in srgb,#28c840 30%,transparent); }
+.mock-badge.blue  { background:color-mix(in srgb,var(--color-accent) 15%,transparent); color:var(--color-accent); border:1px solid color-mix(in srgb,var(--color-accent) 30%,transparent); }
+.mock-badge.muted { background:var(--color-surface-2); color:var(--color-muted); border:1px solid var(--color-border); }
+.mock-progress { height:4px; border-radius:2px; background:var(--color-surface-2); overflow:hidden; }
+.mock-progress-fill { height:100%; width:72%; background:var(--color-accent); border-radius:2px; }
+
+.anim-0 { animation:fadeInUp 0.5s ease-out both; }
+.anim-1 { animation:fadeInUp 0.5s ease-out 0.1s both; }
+.anim-2 { animation:fadeInUp 0.5s ease-out 0.2s both; }
+.anim-3 { animation:fadeInUp 0.5s ease-out 0.3s both; }
+.anim-4 { animation:fadeInUp 0.5s ease-out 0.4s both; }
+
+/* ── SOCIAL PROOF ── */
+.social-proof {
+  background:var(--color-surface);
+  border-top:1px solid var(--color-border);
+  border-bottom:1px solid var(--color-border);
+  padding-block:clamp(2.5rem,5vw,3.5rem);
+}
+.sp-stat {
+  text-align:center;
+  font-size:0.875rem;
+  color:var(--color-accent);
+  font-weight:600;
+  letter-spacing:0.04em;
+  margin-bottom:2rem;
+  font-family:var(--font-headline);
+}
+.logos-row {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:1.5rem 2.5rem;
+}
+.logo-badge {
+  font-family:var(--font-headline);
+  font-size:0.9375rem;
+  font-weight:700;
+  color:var(--color-muted);
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  padding:0.375rem 0.875rem;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius);
+  transition:color var(--transition), border-color var(--transition);
+}
+.logo-badge:hover { color:var(--color-text); border-color:var(--color-accent); }
+
+/* ── PROBLEM / SOLUTION ── */
+.prob-sol { background:var(--color-bg); }
+.prob-sol-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1.5rem;
+}
+@media(min-width:768px){
+  .prob-sol-grid { grid-template-columns:1fr 1fr; }
+}
+.ps-card {
+  background:var(--color-surface);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:clamp(1.5rem,4vw,2.5rem);
+  transition:box-shadow var(--transition), transform var(--transition);
+}
+.ps-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.ps-card h3 { font-family:var(--font-headline); font-size:1.125rem; font-weight:700; color:var(--color-text); margin-bottom:1.25rem; line-height:1.3; }
+.ps-bullets { list-style:none; display:flex; flex-direction:column; gap:0.875rem; }
+.ps-bullets li { display:flex; gap:0.75rem; font-size:0.9375rem; color:var(--color-muted); line-height:1.6; }
+.ps-bullets li .marker { flex-shrink:0; margin-top:0.15em; font-size:1rem; }
+.marker-x { color:#ff6b6b; }
+.marker-check { color:var(--color-accent); }
+
+/* ── FEATURES ── */
+.features { background:var(--color-bg); }
+.features-header { text-align:center; max-width:640px; margin-inline:auto; margin-bottom:3rem; }
+.features-header p { color:var(--color-muted); margin-top:0.75rem; }
+.features-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+  gap:1.5rem;
+}
+.feat-card {
+  background:var(--color-surface);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:1.75rem;
+  transition:box-shadow var(--transition), transform var(--transition);
+}
+.feat-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.feat-icon {
+  width:48px;
+  height:48px;
+  border-radius:var(--radius);
+  background:var(--color-accent-glow);
+  border:1px solid color-mix(in srgb,var(--color-accent) 30%,transparent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:1.25rem;
+  flex-shrink:0;
+}
+.feat-icon svg { width:22px; height:22px; stroke:var(--color-accent); fill:none; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.feat-card h3 { font-family:var(--font-headline); font-size:1.0625rem; font-weight:700; color:var(--color-text); margin-bottom:0.625rem; line-height:1.3; }
+.feat-card p { font-size:0.9rem; color:var(--color-muted); line-height:1.65; }
+
+/* ── METRICS ── */
+.metrics-band {
+  background:var(--color-secondary);
+  border-top:1px solid color-mix(in srgb,var(--color-accent) 25%,transparent);
+  border-bottom:1px solid color-mix(in srgb,var(--color-accent) 25%,transparent);
+  padding-block:clamp(3rem,6vw,5rem);
+  position:relative;
+  overflow:hidden;
+}
+.metrics-band::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 80% 100% at 50% 50%, var(--color-accent-glow), transparent 70%);
+  pointer-events:none;
+}
+.metrics-inner {
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:0;
+}
+.metric-item {
+  flex:1 1 160px;
+  text-align:center;
+  padding:1.5rem 1.25rem;
+  position:relative;
+}
+.metric-item + .metric-item::before {
+  content:'';
+  position:absolute;
+  left:0;
+  top:20%;
+  height:60%;
+  width:1px;
+  background:var(--color-border);
+}
+.metric-val {
+  font-family:var(--font-headline);
+  font-size:clamp(2.25rem,4.5vw,3.25rem);
+  font-weight:800;
+  color:var(--color-accent);
+  line-height:1;
+  letter-spacing:-0.02em;
+  display:block;
+  margin-bottom:0.5rem;
+}
+.metric-label { font-size:0.8125rem; color:var(--color-muted); font-weight:500; letter-spacing:0.02em; line-height:1.4; }
+
+/* ── HOW IT WORKS ── */
+.how { background:var(--color-surface); }
+.how-header { text-align:center; max-width:580px; margin-inline:auto; margin-bottom:3.5rem; }
+.steps {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:2rem;
+  position:relative;
+}
+@media(min-width:900px){
+  .steps { grid-template-columns:repeat(4,1fr); align-items:start; }
+  .steps::before {
+    content:'';
+    position:absolute;
+    top:28px;
+    left:calc(12.5% + 24px);
+    right:calc(12.5% + 24px);
+    height:1px;
+    background:var(--color-border);
+    z-index:0;
+  }
+}
+.step { position:relative; z-index:1; display:flex; flex-direction:column; align-items:flex-start; gap:0.875rem; }
+@media(min-width:900px){ .step { align-items:center; text-align:center; } }
+.step-num {
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:var(--color-accent-glow);
+  border:1.5px solid var(--color-accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-headline);
+  font-size:1.125rem;
+  font-weight:800;
+  color:var(--color-accent);
+  flex-shrink:0;
+}
+.step h3 { font-family:var(--font-headline); font-size:1.0625rem; font-weight:700; color:var(--color-text); line-height:1.3; }
+.step p { font-size:0.9rem; color:var(--color-muted); line-height:1.65; }
+
+/* ── TESTIMONIALS ── */
+.testimonials { background:var(--color-bg); }
+.test-header { text-align:center; max-width:540px; margin-inline:auto; margin-bottom:3rem; }
+.test-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1.5rem;
+}
+@media(min-width:768px){ .test-grid { grid-template-columns:repeat(3,1fr); } }
+.test-card {
+  background:var(--color-surface);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:2rem 1.75rem 1.75rem;
+  transition:box-shadow var(--transition), transform var(--transition);
+  display:flex;
+  flex-direction:column;
+}
+.test-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.quote-mark { font-size:4rem; line-height:1; color:var(--color-accent); font-family:Georgia,serif; margin-bottom:0.25rem; margin-left:-0.25rem; }
+.test-card blockquote { font-size:0.9375rem; color:var(--color-text); line-height:1.7; flex:1; margin-bottom:1.5rem; }
+.test-footer { display:flex; align-items:center; gap:0.875rem; }
+.test-avatar {
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:var(--color-accent-glow);
+  border:1.5px solid var(--color-accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-headline);
+  font-size:0.75rem;
+  font-weight:700;
+  color:var(--color-accent);
+  flex-shrink:0;
+}
+.test-info { font-size:0.85rem; }
+.test-name { color:var(--color-text); font-weight:600; font-family:var(--font-headline); }
+.test-role { color:var(--color-muted); }
+
+/* ── FINAL CTA ── */
+.final-cta {
+  background:var(--color-bg);
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.final-cta::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 80% 70% at 50% 50%, var(--color-accent-glow), transparent 70%);
+  pointer-events:none;
+}
+.final-cta > .container { position:relative; z-index:1; max-width:680px; }
+.final-cta h2 { font-family:var(--font-headline); font-size:clamp(1.75rem,3.5vw,2.75rem); font-weight:800; color:var(--color-text); margin-bottom:1rem; letter-spacing:-0.015em; line-height:1.15; }
+.final-cta p { color:var(--color-muted); margin-bottom:2.5rem; font-size:1.0625rem; }
+.final-cta-btns { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; }
+.text-link { color:var(--color-accent); font-size:0.9375rem; font-weight:600; font-family:var(--font-headline); background:none; border:none; cursor:pointer; padding:0.75rem 1rem; }
+.text-link:hover { text-decoration:underline; }
+
+/* ── FOOTER ── */
+footer {
+  background:var(--color-surface-2);
+  border-top:1px solid var(--color-border);
+  padding-block:clamp(3rem,6vw,5rem) 2rem;
+}
+.footer-top {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:2.5rem;
+  margin-bottom:3rem;
+}
+@media(min-width:640px){ .footer-top { grid-template-columns:1.5fr repeat(3,1fr); } }
+.footer-brand { display:flex; flex-direction:column; gap:1rem; }
+.footer-brand p { font-size:0.875rem; color:var(--color-muted); max-width:240px; line-height:1.6; }
+.footer-col h4 { font-family:var(--font-headline); font-size:0.8125rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--color-muted); margin-bottom:1rem; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:0.6rem; }
+.footer-col ul a { font-size:0.9rem; color:var(--color-muted); transition:color var(--transition); }
+.footer-col ul a:hover { color:var(--color-text); text-decoration:none; }
+.footer-bottom { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:1.5rem; border-top:1px solid var(--color-border); }
+.footer-copy { font-size:0.8125rem; color:var(--color-muted); }
+.social-icons { display:flex; gap:1rem; }
+.social-icons a { color:var(--color-muted); transition:color var(--transition); display:flex; }
+.social-icons a:hover { color:var(--color-accent); }
+.social-icons svg { width:20px; height:20px; }
 </style>
 </head>
 <body>
-  <section class="hero">
-    <h1>SigMa: Sovereign Digital Signature Platform</h1>
-    <p>Coming soon. We're building something amazing.</p>
-    <a href="#contact" class="cta">Get Early Access</a>
-  </section>
+
+<!-- ═══ HEADER ═══ -->
+<header id="site-header">
+  <div class="container header-inner">
+    <a href="#" class="logo-wrap" aria-label="SigMa — Accueil">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" width="240" height="64" fill="none">
+        <defs>
+          <linearGradient id="accentGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00E5FF"/>
+            <stop offset="100%" stop-color="#00B8CC"/>
+          </linearGradient>
+        </defs>
+        <rect x="8" y="12" width="28" height="3.5" rx="1" fill="#0A0F1E"/>
+        <rect x="8" y="48.5" width="28" height="3.5" rx="1" fill="#0A0F1E"/>
+        <path d="M8 15.5 L28 32" stroke="#0A0F1E" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M28 32 L8 48.5" stroke="#0A0F1E" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M31 23 L25.5 33 L29.5 33 L24 43" stroke="url(#accentGrad)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="130" y="39.5" font-family="'Space Grotesk', Arial, sans-serif" font-weight="700" font-size="22" fill="#0A0F1E" letter-spacing="-0.02em" text-anchor="middle" dominant-baseline="auto">SigMa</text>
+      </svg>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Navigation principale">
+      <a href="#conformite">Conformité légale</a>
+      <a href="#integrations">Intégrations</a>
+      <a href="#fonctionnement">Comment ça marche</a>
+      <a href="#blog">Blog</a>
+      <a href="#a-propos">À propos</a>
+    </nav>
+
+    <a href="#acces-anticipe" class="btn btn-primary header-cta">Accès Anticipé</a>
+
+    <button class="hamburger" aria-label="Ouvrir le menu" id="hamburger-btn">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<nav class="mobile-drawer" aria-label="Navigation mobile" id="mobile-drawer">
+  <a href="#conformite" class="drawer-link">Conformité légale</a>
+  <a href="#integrations" class="drawer-link">Intégrations</a>
+  <a href="#fonctionnement" class="drawer-link">Comment ça marche</a>
+  <a href="#blog" class="drawer-link">Blog</a>
+  <a href="#a-propos" class="drawer-link">À propos</a>
+  <a href="#acces-anticipe" class="btn btn-primary">Accès Anticipé</a>
+</nav>
+
+<main>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero" aria-label="Héro">
+  <div class="container">
+    <div class="hero-inner">
+      <span class="eyebrow anim-0">Seule plateforme accréditée AECE en Algérie</span>
+      <h1 class="anim-1">Signez légalement.<br><span>En 10 minutes.</span></h1>
+      <p class="hero-sub anim-2">SigMa est la seule signature électronique qualifiée reconnue par la loi algérienne No.&nbsp;15-04 — hébergée sur infrastructure souveraine.</p>
+      <div class="hero-ctas anim-3">
+        <a href="#acces-anticipe" class="btn btn-primary">Demander un Accès Anticipé</a>
+        <a href="#fonctionnement" class="btn btn-secondary">Voir la démo</a>
+      </div>
+      <p class="trust-line anim-3">✦ Accréditation AECE certifiée &nbsp;·&nbsp; Infrastructure 100% algérienne &nbsp;·&nbsp; Loi No.&nbsp;15-04</p>
+
+      <!-- CSS-only product mock -->
+      <div class="hero-mock anim-4" aria-hidden="true">
+        <div class="mock-bar">
+          <div class="mock-dot"></div>
+          <div class="mock-dot"></div>
+          <div class="mock-dot"></div>
+          <div class="mock-url">app.sigma.dz — Tableau de bord signatures</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-row">
+            <div class="mock-avatar">DJ</div>
+            <div class="mock-lines">
+              <div class="mock-line w80 accent"></div>
+              <div class="mock-line w60"></div>
+            </div>
+          </div>
+          <div class="mock-status-row">
+            <div class="mock-badge green">✔ Signé — Classe 3</div>
+            <div class="mock-badge blue">⟳ En attente (2/4)</div>
+            <div class="mock-badge muted">Horodatage qualifié</div>
+          </div>
+          <div class="mock-progress"><div class="mock-progress-fill"></div></div>
+          <div class="mock-row">
+            <div class="mock-lines">
+              <div class="mock-line w40"></div>
+              <div class="mock-line w80"></div>
+            </div>
+            <div class="mock-avatar">RS</div>
+          </div>
+          <div class="mock-status-row">
+            <div class="mock-badge blue">PDF scellé — AECE</div>
+            <div class="mock-badge muted">Paquet de preuve généré</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOCIAL PROOF ═══ -->
+<section class="social-proof" aria-label="Preuves sociales">
+  <div class="container">
+    <p class="sp-stat">Conforme à 100% AECE · Zéro exposition de données à l'étranger · Infrastructure souveraine algérienne</p>
+    <div class="logos-row" aria-label="Partenaires et certifications">
+      <div class="logo-badge">AECE</div>
+      <div class="logo-badge">ANCE</div>
+      <div class="logo-badge">Ministère de la Justice</div>
+      <div class="logo-badge">SAP</div>
+      <div class="logo-badge">Oracle</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM / SOLUTION ═══ -->
+<section class="prob-sol" id="conformite" aria-labelledby="ps-heading">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:3rem;">
+      <span class="eyebrow">Le problème vs. la solution</span>
+      <h2 class="section-title" id="ps-heading" style="max-width:680px;margin-inline:auto;">La signature papier n'est pas seulement lente — elle est un risque légal actif.</h2>
+    </div>
+    <div class="prob-sol-grid">
+      <div class="ps-card">
+        <h3>Chaque signature papier coûte des jours — et expose votre organisation à un risque légal réel</h3>
+        <ul class="ps-bullets">
+          <li><span class="marker marker-x">✕</span><span>Je perds 3 à 5 jours ouvrables par contrat à cause des cycles impression-signature-scan-email — et les erreurs de version s'accumulent.</span></li>
+          <li><span class="marker marker-x">✕</span><span>Mes équipes juridiques ne peuvent pas prouver en justice que DocuSign ou Adobe Sign ont valeur légale sous la loi algérienne No.&nbsp;15-04.</span></li>
+          <li><span class="marker marker-x">✕</span><span>Chaque signature traitée par un prestataire étranger expose mes données contractuelles à des juridictions non algériennes — une violation directe de la souveraineté des données.</span></li>
+        </ul>
+      </div>
+      <div class="ps-card">
+        <h3>Signez en 10 minutes. Admissible devant tout tribunal algérien.</h3>
+        <ul class="ps-bullets">
+          <li><span class="marker marker-check">✔</span><span>Signatures qualifiées Classe 3 — le niveau d'assurance le plus élevé reconnu par les tribunaux algériens, garanti par token AECE et HSM sécurisé.</span></li>
+          <li><span class="marker marker-check">✔</span><span>Workflows multi-signataires automatisés : routage vers 10 signataires, suivi en temps réel, PDF scellé et paquet de preuve infalsifiable généré automatiquement.</span></li>
+          <li><span class="marker marker-check">✔</span><span>Données contractuelles hébergées exclusivement sur infrastructure algérienne — aucune exposition à une juridiction étrangère, conformité totale à la loi No.&nbsp;15-04.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES GRID ═══ -->
+<section class="features" id="integrations" aria-labelledby="feat-heading">
+  <div class="container">
+    <div class="features-header">
+      <span class="eyebrow">Fonctionnalités</span>
+      <h2 class="section-title" id="feat-heading">Une plateforme. Une conformité totale.</h2>
+      <p>Tout ce dont votre organisation a besoin pour signer légalement, rapidement et souverainement.</p>
+    </div>
+    <div class="features-grid">
+
+      <!-- Shield -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Obtenez l'immunité réglementaire instantanément</h3>
+        <p>SigMa est la seule plateforme accréditée AECE et intégrée à l'ICP nationale algérienne — chaque signature produit un badge de conformité Law 15-04 vérifiable. Les plateformes étrangères sont structurellement disqualifiées.</p>
+      </div>
+
+      <!-- Lock -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Signez avec force probante Classe 3</h3>
+        <p>Chaque signature SigMa repose sur un token matériel AECE, une clé privée conservée dans un HSM certifié, et un paquet de preuve horodaté admissible comme preuve légale devant les tribunaux algériens.</p>
+      </div>
+
+      <!-- Zap -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>Éliminez 5 étapes papier en une seule</h3>
+        <p>Remplacez le cycle impression-signature-scan-email-archivage par un workflow numérique en une étape — routage automatique jusqu'à 10 signataires, notifications bilingues, PDF scellé en moins de 10 minutes. Gain mesuré : 87% de réduction de délai.</p>
+      </div>
+
+      <!-- Layers -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </div>
+        <h3>Connectez-vous à SAP, Oracle et Odoo précisément</h3>
+        <p>Les connecteurs ERP natifs de SigMa s'intègrent directement aux flux d'achat et de finance existants — aucun silo applicatif, aucune double saisie. Interface bilingue arabe/français. Mise en production moyenne : 11 jours ouvrables.</p>
+      </div>
+
+      <!-- Eye -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3>Suivez chaque signature en temps réel</h3>
+        <p>Le tableau de bord SigMa affiche le statut de chaque signataire, l'horodatage de chaque action, et les relances automatiques configurables. Journal d'audit exportable en un clic pour les responsables conformité.</p>
+      </div>
+
+      <!-- Globe -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>Préparez l'expansion Afrique francophone dès aujourd'hui</h3>
+        <p>L'architecture SigMa est conçue pour dupliquer l'accréditation souveraine — Tunisie, Maroc, Sénégal — sans refonte technique. Investissez dans une plateforme multi-marché, pas une solution mono-pays.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ METRICS BAND ═══ -->
+<section class="metrics-band" aria-label="Métriques clés">
+  <div class="container">
+    <div class="metrics-inner">
+      <div class="metric-item">
+        <span class="metric-val">&lt;&nbsp;10&nbsp;min</span>
+        <span class="metric-label">Temps moyen de signature complète</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-val">87%</span>
+        <span class="metric-label">Réduction du délai contractuel</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-val">100%</span>
+        <span class="metric-label">Conformité AECE certifiée</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-val">0</span>
+        <span class="metric-label">Données exposées hors Algérie</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-val">11&nbsp;j</span>
+        <span class="metric-label">Déploiement ERP moyen</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how" id="fonctionnement" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="how-header">
+      <span class="eyebrow">Comment ça marche</span>
+      <h2 class="section-title" id="how-heading">De zéro à signé en 4 étapes</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Chargez votre document</h3>
+        <p>Importez votre contrat PDF ou Word depuis SAP, Oracle ou Odoo via le connecteur natif SigMa — ou déposez-le manuellement en moins de 30 secondes. Aucune conversion de format.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Désignez les signataires</h3>
+        <p>Ajoutez jusqu'à 10 signataires par ordre de priorité, assignez les zones de signature, configurez des rappels automatiques en arabe ou en français. SigMa route le document instantanément.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Signez avec token AECE</h3>
+        <p>Chaque signataire s'authentifie avec son token matériel AECE certifié — la clé privée ne quitte jamais le HSM souverain algérien. La signature Classe 3 est apposée en moins de 45 secondes.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Recevez le PDF scellé</h3>
+        <p>Dès la dernière signature, SigMa génère automatiquement un PDF scellé avec horodatage qualifié et paquet de preuve infalsifiable archivé sur infrastructure algérienne. Immédiatement admissible en justice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="testimonials" id="a-propos" aria-labelledby="test-heading">
+  <div class="container">
+    <div class="test-header">
+      <span class="eyebrow">Témoignages</span>
+      <h2 class="section-title" id="test-heading">Des résultats mesurables, pas des promesses.</h2>
+    </div>
+    <div class="test-grid">
+
+      <div class="test-card">
+        <div class="quote-mark" aria-hidden="true">"</div>
+        <blockquote>Nous avons réduit nos délais de signature contractuelle de 4,3 jours à moins de 18 minutes en moyenne. Pour notre volume de 340 contrats trimestriels, c'est une récupération de 23 jours-équivalent par trimestre — et zéro risque légal Law 15-04.</blockquote>
+        <div class="test-footer">
+          <div class="test-avatar" aria-hidden="true">DJ</div>
+          <div class="test-info">
+            <div class="test-name">Directeur Juridique</div>
+            <div class="test-role">Directeur Conformité &amp; Affaires Juridiques · Banque commerciale algérienne</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="quote-mark" aria-hidden="true">"</div>
+        <blockquote>Avant SigMa, notre processus de marchés publics impliquait 5 allers-retours physiques par dossier. Aujourd'hui, 97% de nos dossiers sont signés dans la journée. Notre équipe DSI a déployé les connecteurs SAP en 9 jours ouvrables sans intervention externe.</blockquote>
+        <div class="test-footer">
+          <div class="test-avatar" aria-hidden="true">RS</div>
+          <div class="test-info">
+            <div class="test-name">Responsable Systèmes d'Information</div>
+            <div class="test-role">DSI · Agence publique nationale</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="quote-mark" aria-hidden="true">"</div>
+        <blockquote>En tant que conseiller juridique, j'avais besoin de certitudes — pas de promesses marketing. SigMa est la seule solution pour laquelle j'ai pu documenter une base légale complète sous la loi No.&nbsp;15-04 et présenter un avis formel d'adoption en 48 heures.</blockquote>
+        <div class="test-footer">
+          <div class="test-avatar" aria-hidden="true">CJ</div>
+          <div class="test-info">
+            <div class="test-name">Conseiller Juridique Principal</div>
+            <div class="test-role">Head of Legal · Groupe industriel privé algérien</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<section class="final-cta" id="acces-anticipe" aria-labelledby="fcta-heading">
+  <div class="container">
+    <span class="eyebrow">Accès Anticipé</span>
+    <h2 id="fcta-heading">Chaque jour sans SigMa est un risque légal mesurable.</h2>
+    <p>Accès anticipé prioritaire. Sans engagement. Réponse sous 24 heures.</p>
+    <div class="final-cta-btns">
+      <a href="mailto:acces@sigma.dz" class="btn btn-primary" style="font-size:1rem;padding:0.875rem 2rem;">Demander l'Accès Anticipé</a>
+      <a href="#fonctionnement" class="text-link">Voir comment ça marche →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="blog" aria-label="Pied de page">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" aria-label="SigMa — Accueil" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-headline);font-size:1.25rem;font-weight:800;color:var(--color-text);text-decoration:none;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          SigMa
+        </a>
+        <p>La seule signature électronique qualifiée reconnue par la loi algérienne No.&nbsp;15-04. Infrastructure souveraine. Conformité totale.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <ul>
+          <li><a href="#conformite">Conformité légale</a></li>
+          <li><a href="#integrations">Intégrations ERP</a></li>
+          <li><a href="#fonctionnement">Comment ça marche</a></li>
+          <li><a href="#acces-anticipe">Accès Anticipé</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ressources</h4>
+        <ul>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#blog">Loi No.&nbsp;15-04 expliquée</a></li>
+          <li><a href="#blog">Guide AECE</a></li>
+          <li><a href="#blog">Documentation API</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Entreprise</h4>
+        <ul>
+          <li><a href="#a-propos">À propos</a></li>
+          <li><a href="#a-propos">Carrières</a></li>
+          <li><a href="mailto:contact@sigma.dz">Contact</a></li>
+          <li><a href="#conformite">Mentions légales</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2024 SigMa Technologies SPA — Algérie. Tous droits réservés. Accrédité AECE &nbsp;·&nbsp; Loi No.&nbsp;15-04</p>
+      <div class="social-icons">
+        <!-- LinkedIn -->
+        <a href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+        <!-- X / Twitter -->
+        <a href="#" aria-label="X / Twitter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4l16 16M4 20L20 4"/>
+          </svg>
+        </a>
+        <!-- GitHub -->
+        <a href="#" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Sticky header scroll class
+  var hdr = document.getElementById('site-header');
+  window.addEventListener('scroll', function(){
+    hdr.classList.toggle('scrolled', window.scrollY > 20);
+  }, {passive:true});
+
+  // Mobile nav toggle
+  var btn = document.getElementById('hamburger-btn');
+  var drawer = document.getElementById('mobile-drawer');
+  btn.addEventListener('click', function(){
+    var open = document.body.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  });
+
+  // Close drawer on link click
+  drawer.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      document.body.classList.remove('nav-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Ouvrir le menu');
+    });
+  });
+})();
+</script>
 </body>
 </html>
